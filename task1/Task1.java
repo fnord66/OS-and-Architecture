@@ -5,8 +5,18 @@ import java.util.*;
 public class Task1 {
   public static void main(String[] args) {
     
+	Monitor monitor = new Monitor();
+	ServerThread server = new ServerThread("Server", monitor);
+	ClientThread[] clientThreads = createClientThreads(Integer.parseInt(args[0]));
 	
-	ServerThread server = new ServerThread();
+	server.start();
+	
+	for(int i = 0; i < clientThreads.length; ++i) {
+      clientThreads[i] = new ClientThread("Client Thread " + i, monitor, i);
+      clientThreads[i].start();
+    }
+	
+	
 	
 	
 	
@@ -18,5 +28,19 @@ public class Task1 {
       printThreads[i] = new PrintThread("PrintThread" + i, i, sharedString);
       printThreads[i].start();
     }*/
+  }
+  
+  public static ClientThread[] createClientThreads(int args){
+	
+	ClientThread[] tempClientThreads = null;
+	
+	try{
+		tempClientThreads = new ClientThread[args];
+	}
+	catch(Exception e){
+		e.printStackTrace();
+	}
+	
+	return tempClientThreads;
   }
 }

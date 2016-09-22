@@ -7,18 +7,44 @@ import java.util.Scanner;
 public class ServerThread extends Thread{
 	private HashMap<Integer, String> hmap = new HashMap<Integer, String>();
 	private ArrayList<String> requests = new ArrayList<String>();
+	
+	private Scanner in;
 	private File initFile = new File("init_buffer_pages.dat");
 	private File requestFile = new File("all_requests.dat");
-	private Scanner in;
 	
-	public ServerThread(){
-		//super(name);
+	private Monitor monitor;
+	private int currentRequest = 0;
+	
+	public ServerThread(String name, Monitor monitor){
+		super(name);
+		this.monitor = monitor;
 		readInitBuffer();
+		
 	}
 	
-	/*public run(){
-		readRequest();
-	}*/
+	public void run(){
+		while(currentRequest < requests.size()){
+			String[] tokenisedRequest = requests.get(currentRequest).split(" ");
+			
+			monitor.setClientId(Integer.parseInt(tokenisedRequest[0]));
+			
+			if(tokenisedRequest.length == 3){
+				
+			}
+			else{
+				
+			}
+			
+			/*for(int i = 0; i < tokenisedRequest.length; i++){
+				System.out.println(tokenisedRequest[i]);
+			}*/
+
+			currentRequest++;
+		}
+		//monitor.sendRequest(requests.getNext().split());
+
+		//monitor.
+	}
 	
 	public void readInitBuffer(){
 		
@@ -34,14 +60,14 @@ public class ServerThread extends Thread{
 		
 		while(in.hasNextLine()){
 			String line = in.nextLine();
-			System.out.println(line);
+			requests.add(line);
         }
 		
-		for (Map.Entry<Integer, String> entry : hmap.entrySet()) {
+		/*for (Map.Entry<Integer, String> entry : hmap.entrySet()) {
 			Integer key = entry.getKey();
 			String value = entry.getValue();
 			System.out.println("key, " + key + " value " + value);
-		}	
+		}*/	
 	}
 	
 	public void initFile(File loadFile)
