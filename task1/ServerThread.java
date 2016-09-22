@@ -6,7 +6,9 @@ import java.util.Scanner;
 
 public class ServerThread extends Thread{
 	private HashMap<Integer, String> hmap = new HashMap<Integer, String>();
-	private File init = new File("init_buffer_pages.dat");
+	private ArrayList<String> requests = new ArrayList<String>();
+	private File initFile = new File("init_buffer_pages.dat");
+	private File requestFile = new File("all_requests.dat");
 	private Scanner in;
 	
 	public ServerThread(){
@@ -14,18 +16,13 @@ public class ServerThread extends Thread{
 		readInitBuffer();
 	}
 	
-	public run(){
-		
-	}
+	/*public run(){
+		readRequest();
+	}*/
 	
 	public void readInitBuffer(){
-		try{
-			in = new Scanner(init);
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-		}
+		
+		initFile(initFile);
 		
 		while(in.hasNextLine()){
             String line = in.nextLine();
@@ -33,10 +30,28 @@ public class ServerThread extends Thread{
 			hmap.put(Integer.parseInt(parts[0]), parts[1]);
         }
 		
-		/*for (Map.Entry<Integer, String> entry : hmap.entrySet()) {
+		initFile(requestFile);
+		
+		while(in.hasNextLine()){
+			String line = in.nextLine();
+			System.out.println(line);
+        }
+		
+		for (Map.Entry<Integer, String> entry : hmap.entrySet()) {
 			Integer key = entry.getKey();
 			String value = entry.getValue();
 			System.out.println("key, " + key + " value " + value);
-		}*/	
+		}	
+	}
+	
+	public void initFile(File loadFile)
+	{
+		try{
+			in = new Scanner(loadFile);
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
 	}
 }
