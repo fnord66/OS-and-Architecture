@@ -5,9 +5,10 @@ import java.util.*;
 public class Task1 {
   public static void main(String[] args) {
     
-	Monitor monitor = new Monitor();
+	Monitor monitor = new Monitor("initial Page");
 	ServerThread server = new ServerThread("Server", monitor);
-	ClientThread[] clientThreads = createClientThreads(Integer.parseInt(args[0]));
+	//ClientThread[] clientThreads = createClientThreads(Integer.parseInt(args[0]));
+	ClientThread[] clientThreads = new ClientThread[3];
 	
 	server.start();
 	

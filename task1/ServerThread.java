@@ -24,12 +24,23 @@ public class ServerThread extends Thread{
 	
 	public void run(){
 		while(currentRequest < requests.size()){
-			String[] tokenisedRequest = requests.get(currentRequest).split(" ");
+			try{
+				while(monitor.clientId != -1){
+					wait();
+				}
+			}
+			catch(Exception e){
+				System.out.println("server thread wait exception");
+			}
+			System.out.println(requests.get(currentRequest));
+			String[] tokenisedRequest = requests.get(currentRequest).split(" ", 3);
 			
-			monitor.setClientId(Integer.parseInt(tokenisedRequest[0]));
+			//System.out.println("HEEEEERRRRREE:  " + tokenisedRequest[3]);
 			
-			if(tokenisedRequest.length == 3){
-				
+			
+			
+			if(tokenisedRequest[1].equals("read")){
+				monitor.readRequest(Integer.parseInt(tokenisedRequest[0]), hmap.get((Integer.parseInt(tokenisedRequest[2]))));
 			}
 			else{
 				

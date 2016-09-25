@@ -3,17 +3,17 @@ import java.util.*;
 
 
 public class Monitor{
-	private int clientId = -1;
+	public int clientId;
 	private String pageContents;
 	
 	final int READ = 0;
 	final int WRITE = 1;
 	
-	public Monitor()
-	{
-		
+	public Monitor(String page) {
+		pageContents = page;
+		clientId = -1;
 	}
-	
+
 	public void sendRequest(String[] request){
 		clientId = Integer.parseInt(request[0]);
 		clientId = Integer.parseInt(request[1]);
@@ -29,9 +29,8 @@ public class Monitor{
 			 while(this.clientId != clientId){
 			 wait();
 			 }
-			System.out.println("Please type in word: ");
-
-			myTurn = 2;
+			System.out.println("Thread " + clientId + " contents " + pageContents);
+			this.clientId = -1;
 		}catch (Exception exception) {
 			exception.printStackTrace();
 		}
@@ -39,8 +38,10 @@ public class Monitor{
 	notifyAll();
 	}
 	
-	public void readRequest(){
-
+	public synchronized void readRequest(int clientId, String pageContents){
+		this.clientId = clientId;
+		this.pageContents = pageContents;
+		notifyAll();
 	}
 	
 	public void writeRequest(){

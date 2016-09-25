@@ -8,10 +8,11 @@ public class ClientThread extends Thread{
 	
 	public ClientThread(String name, Monitor monitor, int id){
 		super(name);
+		this.monitor = monitor;
 		clientId = id;
 	}
 	
 	public void run(){
-		monitor.getpage(clientId);
+		//monitor.getPage(clientId);
 	}
 }
